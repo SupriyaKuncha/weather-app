@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="src/styles.css" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM"
+      crossorigin="anonymous"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;700&family=Poppins:ital,wght@0,200;0,300;0,400;1,700&family=Roboto:wght@300;400;500;700;900&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/axios@1.1.2/dist/axios.min.js"></script>
+    <title>Weather App</title>
+  </head>
+  <body>
+    <div class="card">
+      <div class="card-body">
+        <div class="container">
+          <div class="row">
+          <div class="flex-container">
+            <form class="search-form col col-md -6 col-lg-6"  id ="search-form">
+              <input
+                type="search"
+                placeholder="Search for the city"
+                class="search col col-md -6 col-lg-6"
+                id="search-input"
+              />
+              <input
+                type="submit"
+                value="Search"
+                class="btn btn-info"
+                class="col col-md -6 col-lg-6 "
+              />
+            </form>
+            <input
+            type="submit"
+            value="Current"
+            class="btn btn-success"
+            class="current"
+            id="current-id"
+          />
+          </div>
+            <div class="col placeDescription">
+              <div class="place col col-sm-12 col-md-6 col-lg-6" id="place1">
+                Chennai
+              </div>
+              <div class="Day col col-sm-12 col-md-6 col-lg-6">
+                Saturday, July 8
+              </div>
+              <div class="time col col-sm-12 col-md-6 col-lg-6">10pm</div>
+              <div class="humidity col col-sm-12 col-md-6 col-lg-6" id="description-id">Haze</div>
+            </div>
+
+            <div class="col tempDetails">
+              <div class="temp-wrap col col-sm-12 col-md-6 col-lg-6">
+                <span class="temp" id="temp">32
+                </span>
+                <span class="temp-units">
+                  <a href="#" id="celcius">°C</a> 
+                  <!-- <a href="#" id="fahrenheit">°F</a> -->
+                </span>
+              </div>
+              
+              <div class="precipitation col col-sm-12 col-md-6 col-lg-6">
+                Precipitation: 74%
+              </div>
+              <div class="wind col col-sm-12 col-md-6 col-lg-6">
+                Wind: 4km/h
+              </div>
+            </div>
+            <h1 class="forcast">Weather forcast for next few days</h1>
+            <div class="col col-sm-6 col-md-3 col-lg-3">
+              <span class="days">Sun</span> <br /><span class="emoji">☁️</span
+              ><br /><span class="days">32°C</span>
+            </div>
+            <div class="col col-sm-6 col-md-3 col-lg-3">
+              <span class="days">Mon</span> <br /><span class="emoji">⛈️</span
+              ><br />
+              <span class="days">25°C</span>
+            </div>
+            <div class="col col-sm-6 col-md-3 col-lg-3">
+              <span class="days">Tue</span> <br /><span class="emoji">🌧️</span
+              ><br />
+              <span class="days">30°C</span>
+            </div>
+            <div class="col col-sm-6 col-md-3 col-lg-3">
+              <span class="days">Wed</span> <br /><span class="emoji">🌤️</span
+              ><br />
+              <span class="days">37°C</span>
+            </div>
+          </div>
+          <div class="result">
+            <h2>Don't forget to carry your umbrella☔</h2>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="src/index.js"></script>
+  </body>
+</html>
