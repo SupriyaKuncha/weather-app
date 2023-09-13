@@ -43,8 +43,6 @@ function formatCurrentTime(timestamp) {
     greetTime.innerHTML = `${day}, ${hours}:${minutes} PM`;
     timeUpdate.innerHTML = `${day}, ${hours}:${minutes} PM`;
   }else if (hours == 10 || hours == 11) {
-    console.log(hours);
-    alert(hours);
     greetImage.src = "img/sunrise_1.svg";
     greeting.innerHTML = `Good Morning`;
     greetTime.innerHTML = `${day}, ${hours}:${minutes} AM`;
