@@ -118,8 +118,10 @@ function searchHandle(event) {
   let value = searchInput.value.trim();
   if (value.length === 0) {
     alert("Please enter the city 🙌");
+   searchPlace("Lisbon");
+  } else {
+    searchPlace(value);
   }
-  searchPlace(value);
 }
 
 let form = document.querySelector("#search-form");
