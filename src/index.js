@@ -1,7 +1,6 @@
-
 function formatCurrentTime(timestamp) {
-    let now = new Date(timestamp * 1000);
-    let days = [
+  let now = new Date(timestamp * 1000);
+  let days = [
     "Sunday",
     "Monday",
     "Tuesday",
@@ -10,48 +9,59 @@ function formatCurrentTime(timestamp) {
     "Friday",
     "Saturday",
   ];
-    let day = days[now.getDay()];
-    //time calculation 
-    let greetTime = document.querySelector(".time");
-    let timeUpdate = document.querySelector("#time");
-    let greeting = document.querySelector(".greeting");
-    let minutes = now.getMinutes();
-    let greetImage = document.querySelector("#greet-image");
-    if (minutes < 10) {
-        minutes = `0${minutes}`;
-    }
-    let hours = now.getHours();
-    if (hours) {
-        
-    }
-    if (hours < 10) {
-        hours = `0${hours}`;
-        greetImage.src="img/sunrise_1.svg"
-        greeting.innerHTML = `Good Morning`;
-        greetTime.innerHTML = `${day}, ${hours}:${minutes} AM`;
-        timeUpdate.innerHTML = `${day}, ${hours}:${minutes} AM`;
-    }else if (hours >=12&&hours<=17) {
-        hours = (hours - 12);
-        hours = `0${hours}`;
-        greetImage.src="img/sun.svg"
-        greeting.innerHTML = `Good Afternoon`;
-        greetTime.innerHTML = `${day}, ${hours}:${minutes} PM`;
-        timeUpdate.innerHTML = `${day}, ${hours}:${minutes} PM`;
-    } else {
-        hours = (hours - 12);
-        hours = `${hours}`;
-        greeting.innerHTML = `Good Evening`;
-        greetImage.src="img/sunset.svg"
-        greetTime.innerHTML = `${day}, ${hours}:${minutes} PM`;
-        timeUpdate.innerHTML = `${day}, ${hours}:${minutes} PM`;
-    }
+  let day = days[now.getDay()];
+  //time calculation
+  let greetTime = document.querySelector(".time");
+  let timeUpdate = document.querySelector("#time");
+  let greeting = document.querySelector(".greeting");
+  let minutes = now.getMinutes();
+  let greetImage = document.querySelector("#greet-image");
+  if (minutes < 10) {
+    minutes = `0${minutes}`;
+  }
+  let hours = now.getHours();
+
+
+  if (hours < 10) {
+    hours = `0${hours}`;
+    greetImage.src = "img/sunrise_1.svg";
+    greeting.innerHTML = `Good Morning`;
+    greetTime.innerHTML = `${day}, ${hours}:${minutes} AM`;
+    timeUpdate.innerHTML = `${day}, ${hours}:${minutes} AM`;
+  } else if (hours > 12 && hours <= 17) {
+    hours = hours - 12;
+    hours = `0${hours}`;
+    greetImage.src = "img/sun.svg";
+    greeting.innerHTML = `Good Afternoon`;
+    greetTime.innerHTML = `${day}, ${hours}:${minutes} PM`;
+    timeUpdate.innerHTML = `${day}, ${hours}:${minutes} PM`;
+  } else if(hours > 17 && hours <= 24){
+    hours = hours - 12;
+    hours = `${hours}`;
+    greeting.innerHTML = `Good Evening`;
+    greetImage.src = "img/sunset.svg";
+    greetTime.innerHTML = `${day}, ${hours}:${minutes} PM`;
+    timeUpdate.innerHTML = `${day}, ${hours}:${minutes} PM`;
+  }else if (hours == 10 || hours == 11) {
+    console.log(hours);
+    alert(hours);
+    greetImage.src = "img/sunrise_1.svg";
+    greeting.innerHTML = `Good Morning`;
+    greetTime.innerHTML = `${day}, ${hours}:${minutes} AM`;
+    timeUpdate.innerHTML = `${day}, ${hours}:${minutes} AM`;
+  }else {
+    greetImage.src = "img/sun.svg";
+    greeting.innerHTML = `Good Afternoon`;
+    greetTime.innerHTML = `${day}, ${hours}:${minutes} PM`;
+    timeUpdate.innerHTML = `${day}, ${hours}:${minutes} PM`;
+  }
 }
 function displayWeather(response) {
   //updating with current position using geo loc
   let currentPlace = document.querySelector("h1");
   currentPlace.innerHTML = `${response.data.city}`;
   let conditionDescription = document.querySelector(".condition");
-//   conditionDescription.innerHTML = ` ${response.data.condition.description}`;
+  //   conditionDescription.innerHTML = ` ${response.data.condition.description}`;
   conditionDescription = document.querySelector(".weather-feel");
   conditionDescription.innerHTML = ` ${response.data.condition.description}`;
   conditionDescription = document.querySelector(".weather-feel-right");
@@ -60,20 +70,21 @@ function displayWeather(response) {
   temperature.innerHTML = `${Math.round(response.data.temperature.current)}`;
   temperature = document.querySelector(".celcius-number-right");
   temperature.innerHTML = `${Math.round(response.data.temperature.current)}`;
-    let temperatureInFahrenheit = temperatureConvert(temperature.innerHTML);
-    let fahrenheitNumber = document.querySelector(".fahrenheit-number");
-    fahrenheitNumber.innerHTML = `${Math.round(temperatureInFahrenheit)}`;
-    let feelsLike = document.querySelector(".feel");
-    feelsLike.innerHTML = `Feel's like ${Math.round(response.data.temperature.feels_like)}°C`
-    formatCurrentTime(response.data.time)
-    let imageUpdate = document.querySelector(".image-update");
-    let imageUrl = response.data.condition.icon_url;
-    imageUpdate.innerHTML = `<img src="${imageUrl}" alt="Weather icon">`;
-    let humidity = document.querySelector("#humidity");
-    humidity.innerHTML=`${response.data.temperature.humidity}%`
-    let wind = document.querySelector("#wind");
-    wind.innerHTML=`${response.data.wind.speed}Km/h`
-    
+  let temperatureInFahrenheit = temperatureConvert(temperature.innerHTML);
+  let fahrenheitNumber = document.querySelector(".fahrenheit-number");
+  fahrenheitNumber.innerHTML = `${Math.round(temperatureInFahrenheit)}`;
+  let feelsLike = document.querySelector(".feel");
+  feelsLike.innerHTML = `Feel's like ${Math.round(
+    response.data.temperature.feels_like
+  )}°C`;
+  formatCurrentTime(response.data.time);
+  let imageUpdate = document.querySelector(".image-update");
+  let imageUrl = response.data.condition.icon_url;
+  imageUpdate.innerHTML = `<img src="${imageUrl}" alt="Weather icon">`;
+  let humidity = document.querySelector("#humidity");
+  humidity.innerHTML = `${response.data.temperature.humidity}%`;
+  let wind = document.querySelector("#wind");
+  wind.innerHTML = `${response.data.wind.speed}Km/h`;
 }
 function temperatureConvert(c) {
   let f;
@@ -83,8 +94,8 @@ function temperatureConvert(c) {
 }
 //function to Update API  for current loation access
 function searchLocation(position) {
-    let lat = position.coords.latitude;
-    let lon = position.coords.longitude;
+  let lat = position.coords.latitude;
+  let lon = position.coords.longitude;
   let key = "54327ccdb4a4b1c7a56a1f4tb0b7od68";
   let url = `https://api.shecodes.io/weather/v1/current?lon=${lon}&lat=${lat}&key=${key}&units=metric`;
   axios.get(url).then(displayWeather);
