@@ -83,6 +83,7 @@ function displayWeather(response) {
   humidity.innerHTML = `${response.data.temperature.humidity}%`;
   let wind = document.querySelector("#wind");
   wind.innerHTML = `${response.data.wind.speed}Km/h`;
+  console.log(response)
 }
 function temperatureConvert(c) {
   let f;
@@ -126,3 +127,4 @@ form.addEventListener("submit", searchHandle);
 
 let currentPosition = document.querySelector("#current-id");
 currentPosition.addEventListener("click", getCurrentLocationDetails);
+searchPlace("Lisbon");
