@@ -1,83 +1,119 @@
-//for searching weather of city entered by user
-let now = new Date();
-//create an array for days
-let days = [
-  "Sunday",
-  "Monday",
-  "Tuesday",
-  "Wednesday",
-  "Thursday",
-  "Friday",
-  "Saturday",
-];
-let day = days[now.getDay()];
-let months = [
-  "January",
-  "February",
-  "March",
-  "April",
-  "May",
-  "June",
-  "July",
-  "August",
-  "September",
-  "October",
-  "Novermeber",
-  "December",
-];
-let month = months[now.getMonth()];
-let date = now.getDate();
-let Day = document.querySelector(".Day");
-Day.innerHTML = `${day}, ${month} ${date}`;
-let Time = now.getHours();
-let time = document.querySelector(".time");
-let Minutes = now.getMinutes();
-time.innerHTML = `${Time}:${Minutes}`;
 
-// to display the weather conditions
-  function displayWeather(response){
-  //  console.log(response)
-    let h1=document.querySelector("#place1");
-    h1.innerHTML=`${response.data.name}`;
-    let h2 =document.querySelector("#temp");
-    h2.innerHTML=`${Math.round(response.data.main.temp)}`
-    let h3=document.querySelector("#description-id");
-    h3.innerHTML=`${response.data.weather[0].description}`
-  }
-// obtaining the value from the search element
-function searchHandle(event){
-  event.preventDefault();
-  let searchInput = document.querySelector("#search-input");
-  let value = searchInput.value.trim();
-  if(value.length==0){
-    alert("Please enter the city");
-  }
-  searchPlace(value);
+function formatCurrentTime(timestamp) {
+    let now = new Date(timestamp * 1000);
+    let days = [
+    "Sunday",
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
+  ];
+    let day = days[now.getDay()];
+    //time calculation 
+    let greetTime = document.querySelector(".time");
+    let timeUpdate = document.querySelector("#time");
+    let greeting = document.querySelector(".greeting");
+    let minutes = now.getMinutes();
+    let greetImage = document.querySelector("#greet-image");
+    if (minutes < 10) {
+        minutes = `0${minutes}`;
+    }
+    let hours = now.getHours();
+    if (hours) {
+        
+    }
+    if (hours < 10) {
+        hours = `0${hours}`;
+        greetImage.src="img/sunrise_1.svg"
+        greeting.innerHTML = `Good Morning`;
+        greetTime.innerHTML = `${day}, ${hours}:${minutes} AM`;
+        timeUpdate.innerHTML = `${day}, ${hours}:${minutes} AM`;
+    }else if (hours >=12&&hours<=17) {
+        hours = (hours - 12);
+        hours = `0${hours}`;
+        greetImage.src="img/sun.svg"
+        greeting.innerHTML = `Good Afternoon`;
+        greetTime.innerHTML = `${day}, ${hours}:${minutes} PM`;
+        timeUpdate.innerHTML = `${day}, ${hours}:${minutes} PM`;
+    } else {
+        hours = (hours - 12);
+        hours = `${hours}`;
+        greeting.innerHTML = `Good Evening`;
+        greetImage.src="img/sunset.svg"
+        greetTime.innerHTML = `${day}, ${hours}:${minutes} PM`;
+        timeUpdate.innerHTML = `${day}, ${hours}:${minutes} PM`;
+    }
 }
-//API url updating 
-function searchPlace(value){
-  let key="8fe5e769240ed184b75fe9f9a9dd648e";
-  let city = `${value}`;
-  let url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${key}&units=metric`;
+function displayWeather(response) {
+  //updating with current position using geo loc
+  let currentPlace = document.querySelector("h1");
+  currentPlace.innerHTML = `${response.data.city}`;
+  let conditionDescription = document.querySelector(".condition");
+//   conditionDescription.innerHTML = ` ${response.data.condition.description}`;
+  conditionDescription = document.querySelector(".weather-feel");
+  conditionDescription.innerHTML = ` ${response.data.condition.description}`;
+  conditionDescription = document.querySelector(".weather-feel-right");
+  conditionDescription.innerHTML = ` ${response.data.condition.description}`;
+  let temperature = document.querySelector(".celcius-number");
+  temperature.innerHTML = `${Math.round(response.data.temperature.current)}`;
+  temperature = document.querySelector(".celcius-number-right");
+  temperature.innerHTML = `${Math.round(response.data.temperature.current)}`;
+    let temperatureInFahrenheit = temperatureConvert(temperature.innerHTML);
+    let fahrenheitNumber = document.querySelector(".fahrenheit-number");
+    fahrenheitNumber.innerHTML = `${Math.round(temperatureInFahrenheit)}`;
+    let feelsLike = document.querySelector(".feel");
+    feelsLike.innerHTML = `Feel's like ${Math.round(response.data.temperature.feels_like)}°C`
+    formatCurrentTime(response.data.time)
+    let imageUpdate = document.querySelector(".image-update");
+    let imageUrl = response.data.condition.icon_url;
+    imageUpdate.innerHTML = `<img src="${imageUrl}" alt="Weather icon">`;
+    let humidity = document.querySelector("#humidity");
+    humidity.innerHTML=`${response.data.temperature.humidity}%`
+    let wind = document.querySelector("#wind");
+    wind.innerHTML=`${response.data.wind.speed}Km/h`
+    
+}
+function temperatureConvert(c) {
+  let f;
+
+  f = c * (9 / 5) + 32;
+  return f;
+}
+//function to Update API  for current loation access
+function searchLocation(position) {
+    let lat = position.coords.latitude;
+    let lon = position.coords.longitude;
+  let key = "54327ccdb4a4b1c7a56a1f4tb0b7od68";
+  let url = `https://api.shecodes.io/weather/v1/current?lon=${lon}&lat=${lat}&key=${key}&units=metric`;
   axios.get(url).then(displayWeather);
 }
-
-//function to search for geo location
-function searchLocation(position) {
-    let lat= position.coords.latitude;
-    let lon= position.coords.longitude;
-    let apiKey = "e0a5a97de9a0b7a951e9d154a8f9bad8";
-    let url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric`;
-    axios.get(url).then(displayWeather);
-}
 //function triggered when button is clicked
-function getCurrentLocation(event) {
+function getCurrentLocationDetails(event) {
   event.preventDefault();
   navigator.geolocation.getCurrentPosition(searchLocation);
 }
-//triggering the search submit action
+//custom API for giving search results
+function searchPlace(value) {
+  let key = "54327ccdb4a4b1c7a56a1f4tb0b7od68";
+  let query = `${value}`;
+  let url = `https://api.shecodes.io/weather/v1/current?query=${query}&key=${key}&units=metric`;
+  axios.get(url).then(displayWeather);
+}
+
+function searchHandle(event) {
+  event.preventDefault();
+  let searchInput = document.querySelector("#search-input");
+  let value = searchInput.value.trim();
+  if (value.length === 0) {
+    alert("Please enter the city 🙌");
+  }
+  searchPlace(value);
+}
+
 let form = document.querySelector("#search-form");
 form.addEventListener("submit", searchHandle);
-//triggering current button for adding geo-location
-let currentDetails=document.querySelector("#current-id");
-currentDetails.addEventListener("click",getCurrentLocation);
+
+let currentPosition = document.querySelector("#current-id");
+currentPosition.addEventListener("click", getCurrentLocationDetails);

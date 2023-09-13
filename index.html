@@ -3,110 +3,98 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="src/styles.css" />
+    <link rel="stylesheet" href="src/style.css" />
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Noto+Sans+JP:wght@400;500;600;700&family=Noto+Sans+Khmer:wght@400;500;600&family=Open+Sans:wght@400;500;600&display=swap");
+    </style>
     <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css"
       rel="stylesheet"
-      integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM"
+      integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9"
       crossorigin="anonymous"
     />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;700&family=Poppins:ital,wght@0,200;0,300;0,400;1,700&family=Roboto:wght@300;400;500;700;900&display=swap"
-      rel="stylesheet"
-    />
     <script src="https://cdn.jsdelivr.net/npm/axios@1.1.2/dist/axios.min.js"></script>
-    <title>Weather App</title>
+    <title>weather app</title>
   </head>
+
   <body>
-    <div class="card">
-      <div class="card-body">
-        <div class="container">
+    <div class="container-flex">
+      <div class="left-container">
+        <div class="greeting-upper">
+          <div class="image">
+            <img src="img/sunrise_1.svg" alt="sunrise" id="greet-image"/>
+          </div>
+          <div class="greeting">Good Morning</div>
+          <div class="time">Monday, 8:50 AM</div>
+        </div>
+        <div class="temperature-column">
+          <div class="celcius">
+            <span class="celcius-number">32</span>
+            <span class="celcius-symbol">°C</span>
+          </div>
+          <span class="or">/</span>
+          <div class="fahrenheit">
+            <span class="fahrenheit-number">88</span>
+            <span class="fahrenheit-symbol">°F</span>
+          </div>
+        </div>
+        <div class="weather-feel">clear sky</div>
+      </div>
+      <div class="right-container">
+        <form id="search-form">
           <div class="row">
-          <div class="flex-container">
-            <form class="search-form col col-md -6 col-lg-6"  id ="search-form">
+            <div class="col-8">
               <input
                 type="search"
-                placeholder="Search for the city"
-                class="search col col-md -6 col-lg-6"
+                placeholder="Enter a city.."
+                class="form-control search-input"
                 id="search-input"
               />
-              <input
-                type="submit"
-                value="Search"
-                class="btn btn-info"
-                class="col col-md -6 col-lg-6 "
-              />
-            </form>
-            <input
-            type="submit"
-            value="Current"
-            class="btn btn-success"
-            class="current"
-            id="current-id"
-          />
-          </div>
-            <div class="col placeDescription">
-              <div class="place col col-sm-12 col-md-6 col-lg-6" id="place1">
-                Chennai
-              </div>
-              <div class="Day col col-sm-12 col-md-6 col-lg-6">
-                Saturday, July 8
-              </div>
-              <div class="time col col-sm-12 col-md-6 col-lg-6">10pm</div>
-              <div class="humidity col col-sm-12 col-md-6 col-lg-6" id="description-id">Haze</div>
             </div>
-
-            <div class="col tempDetails">
-              <div class="temp-wrap col col-sm-12 col-md-6 col-lg-6">
-                <span class="temp" id="temp">32
-                </span>
-                <span class="temp-units">
-                  <a href="#" id="celcius">°C</a> 
-                  <!-- <a href="#" id="fahrenheit">°F</a> -->
-                </span>
+            <div class="col-1 p-1">
+              <img src="img/map-pin.svg" alt="current" class="current" id="current-id" />
+            </div>
+            <div class="col-3 p-0">
+              <input type="submit" class="btn w-100" value="Search" />
+            </div>
+          </div>
+        </form>
+        <div class="weather-info">
+          <div class="row">
+            <div class="col-6">
+              <h1>San Francisco</h1>
+              <ul>
+                <li class="time" id="time">Monday 8:50, </li>
+                <li >Humidity: <strong id="humidity">82%</strong></li>
+                <li >
+                  Wind:
+                  <strong id="wind">4.12km/h</strong>
+                </li>
+              </ul>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-8 p-4">
+              <div class="flex">
+                <div class="image-update">
+                  <img src="http://shecodes-assets.s3.amazonaws.com/api/weather/icons/clear-sky-day.png" alt="clear-sky-day" >
+                </div>
+                <div class="celcius celcius-right">
+                  <span class="celcius-number celcius-number-right">32</span>
+                  <span class="celcius-symbol celcius-symbol-right">°C</span>
+                </div>
               </div>
               
-              <div class="precipitation col col-sm-12 col-md-6 col-lg-6">
-                Precipitation: 74%
-              </div>
-              <div class="wind col col-sm-12 col-md-6 col-lg-6">
-                Wind: 4km/h
-              </div>
+              <div class="feel">Feel's like 30°C</div>
+              <div class="weather-feel weather-feel-right">clear sky</div>
             </div>
-            <h1 class="forcast">Weather forcast for next few days</h1>
-            <div class="col col-sm-6 col-md-3 col-lg-3">
-              <span class="days">Sun</span> <br /><span class="emoji">☁️</span
-              ><br /><span class="days">32°C</span>
-            </div>
-            <div class="col col-sm-6 col-md-3 col-lg-3">
-              <span class="days">Mon</span> <br /><span class="emoji">⛈️</span
-              ><br />
-              <span class="days">25°C</span>
-            </div>
-            <div class="col col-sm-6 col-md-3 col-lg-3">
-              <span class="days">Tue</span> <br /><span class="emoji">🌧️</span
-              ><br />
-              <span class="days">30°C</span>
-            </div>
-            <div class="col col-sm-6 col-md-3 col-lg-3">
-              <span class="days">Wed</span> <br /><span class="emoji">🌤️</span
-              ><br />
-              <span class="days">37°C</span>
-            </div>
-          </div>
-          <div class="result">
-            <h2>Don't forget to carry your umbrella☔</h2>
           </div>
         </div>
       </div>
     </div>
-    <div>
+    <footer>
+      This project is coded by <a href="https://www.linkedin.com/in/kuncha-supriya/" target="_blank" rel="noopener noreferrer" id="linkedin">Supriya</a> and <a href="#">Click here</a> for source code.
+      It is hosted on <a href="#" target="_blank" rel="noopener noreferrer">Netlify</a>.
+    </footer>
 
-      <a href="https://github.com/SupriyaKuncha/weather-app.git" target="_blank" class="link">Link to repo</a>
-    </div>
-    
     <script src="src/index.js"></script>
   </body>
 </html>
