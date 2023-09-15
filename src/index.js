@@ -127,9 +127,6 @@ function dailyWeatherForecast(response) {
             <div class="col-3 weather-forcast-col">
               <div class="weather-forcast-day">
               ${formatForecast(days.time)}
-              
-              <br/>
-              
               </div>
               <div>
                 <img src="${forecastImageUrl}" id="weather-forcast-img" alt="">
