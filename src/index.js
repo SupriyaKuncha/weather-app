@@ -1,3 +1,4 @@
+//formating the date
 function formatCurrentTime(timestamp) {
   let now = new Date(timestamp * 1000);
   let days = [
@@ -20,22 +21,20 @@ function formatCurrentTime(timestamp) {
     minutes = `0${minutes}`;
   }
   let hours = now.getHours();
-
-
   if (hours < 10) {
     hours = `0${hours}`;
     greetImage.src = "img/sunrise_1.svg";
     greeting.innerHTML = `Good Morning`;
     greetTime.innerHTML = `${day}, ${hours}:${minutes} AM`;
     timeUpdate.innerHTML = `${day}, ${hours}:${minutes} AM`;
-  } else if (hours > 12 && hours <= 17) {
+  } else if (hours > 12 && hours < 17) {
     hours = hours - 12;
     hours = `0${hours}`;
     greetImage.src = "img/sun.svg";
     greeting.innerHTML = `Good Afternoon`;
     greetTime.innerHTML = `${day}, ${hours}:${minutes} PM`;
     timeUpdate.innerHTML = `${day}, ${hours}:${minutes} PM`;
-  } else if(hours > 17 && hours <= 24){
+  } else if(hours >= 17 && hours <= 24){
     hours = hours - 12;
     hours = `${hours}`;
     greeting.innerHTML = `Good Evening`;
@@ -54,6 +53,7 @@ function formatCurrentTime(timestamp) {
     timeUpdate.innerHTML = `${day}, ${hours}:${minutes} PM`;
   }
 }
+//display weather, this is the main function where all function calls
 function displayWeather(response) {
   //updating with current position using geo loc
   let currentPlace = document.querySelector("h1");
@@ -83,14 +83,78 @@ function displayWeather(response) {
   humidity.innerHTML = `${response.data.temperature.humidity}%`;
   let wind = document.querySelector("#wind");
   wind.innerHTML = `${response.data.wind.speed}Km/h`;
-  console.log(response)
+  // console.log(response.data.coordinates.latitude);
+  // console.log(response.data.coordinates.longitude);
+  forecasteHandle(response.data.coordinates.latitude, response.data.coordinates.longitude);
+
+
+  
 }
+//function snippet to display the temperature conversion
 function temperatureConvert(c) {
   let f;
 
   f = c * (9 / 5) + 32;
   return f;
 }
+//format forecastDay
+function formatForecast(timestamp) {
+   let now = new Date(timestamp * 1000);
+    let day = [
+    "Sun",
+    "Mon",
+    "Tue",
+    "Wed",
+    "Thu",
+    "Fri",
+    "Sat",
+  ];
+  let forecastDay = day[now.getDay()];
+  return forecastDay
+}
+//weather forcast
+function dailyWeatherForecast(response) {
+  
+  let forecastElement = document.querySelector("#weather-forcast-id");
+  let forecastDays = response.data.daily;
+  let forecastHtml = `<div class="row">`
+  forecastDays.forEach(function (days, index) {
+    
+    let forecastImageUrl = days.condition.icon_url;
+    if (index <6) {
+      forecastHtml = forecastHtml +
+            `
+            <div class="col-3 weather-forcast-col">
+              <div class="weather-forcast-day">
+              ${formatForecast(days.time)}
+              
+              <br/>
+              
+              </div>
+              <div>
+                <img src="${forecastImageUrl}" id="weather-forcast-img" alt="">
+              </div>
+              <div>
+                <span class="forcast-temperature-max">${Math.round(days.temperature.maximum)}°</span>/
+                <span class="forcast-temperature-min">${Math.round(days.temperature.minimum)}°</span>
+              </div>
+            </div>
+            `
+    }
+      
+  })
+  forecastHtml = forecastHtml + `</div>`
+  forecastElement.innerHTML = forecastHtml;
+  
+}
+//handling the latitude and longitude for forecast
+function forecasteHandle(lat, lon) {
+  let key = "54327ccdb4a4b1c7a56a1f4tb0b7od68";
+  let url = `https://api.shecodes.io/weather/v1/forecast?lon=${lon}&lat=${lat}&key=${key}&units=metric`;
+  axios(url).then(dailyWeatherForecast);
+  
+}
+
 //function to Update API  for current loation access
 function searchLocation(position) {
   let lat = position.coords.latitude;
@@ -99,7 +163,7 @@ function searchLocation(position) {
   let url = `https://api.shecodes.io/weather/v1/current?lon=${lon}&lat=${lat}&key=${key}&units=metric`;
   axios.get(url).then(displayWeather);
 }
-//function triggered when button is clicked
+//function triggered when current icon is clicked
 function getCurrentLocationDetails(event) {
   event.preventDefault();
   navigator.geolocation.getCurrentPosition(searchLocation);
@@ -110,8 +174,10 @@ function searchPlace(value) {
   let query = `${value}`;
   let url = `https://api.shecodes.io/weather/v1/current?query=${query}&key=${key}&units=metric`;
   axios.get(url).then(displayWeather);
+  
 }
 
+// function to retrive the search value
 function searchHandle(event) {
   event.preventDefault();
   let searchInput = document.querySelector("#search-input");
@@ -124,9 +190,15 @@ function searchHandle(event) {
   }
 }
 
+//adding event listener for search form 
 let form = document.querySelector("#search-form");
 form.addEventListener("submit", searchHandle);
 
+//adding event to current icon
 let currentPosition = document.querySelector("#current-id");
 currentPosition.addEventListener("click", getCurrentLocationDetails);
+
+//this is used to display the default real time weather info 
+//when no even / action is performed.
 searchPlace("Lisbon");
+
